@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Here&#39;s Xinre&#39;s blog</title>
+  
+  
+  <link href="http://xinre.top/atom.xml" rel="self"/>
+  
+  <link href="http://xinre.top/"/>
+  <updated>2023-09-02T09:07:57.696Z</updated>
+  <id>http://xinre.top/</id>
+  
+  <author>
+    <name>Xinre</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>初次使用 Hexo</title>
+    <link href="http://xinre.top/2023/09/02/hello-world/"/>
+    <id>http://xinre.top/2023/09/02/hello-world/</id>
+    <published>2023-09-02T08:23:22.902Z</published>
+    <updated>2023-09-02T09:07:57.696Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;由于我不会前端，所以就使用 Hexo</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
