@@ -691,7 +691,7 @@
 <p><code>main.py</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> api <span class="keyword">import</span> (</span><br><span class="line">    Bot,</span><br><span class="line">    Event,</span><br><span class="line">    on_keyword</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@on_keyword(<span class="params"><span class="string">&quot;echo&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params"></span></span><br><span class="line"><span class="params">    bot: Bot,</span></span><br><span class="line"><span class="params">    event: Event</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">await</span> bot.send(event.get_group_id, event.get_message)</span><br></pre></td></tr></table></figure>
 
-<p>在本示例中，<code>__init__.py</code> 用来初始化插件信息及其内部的对接收到的信息进行处理的函数。其中 <code>__plugin_meta__</code> 变量用于描述插件信息，包括插件名、描述、作者、用法等。如你所见，<code>PluginMeta</code> 是 <code>__plugin_meta__</code> 的元类，它定义在 <code>hysialx.plugins.manager</code> 包下。事实上，<code>__plugin_meta__</code> 的有无并不重要，它只是提供了一个 <code>PluginMeta</code> 实例，你可以通过 <code>get_plugin_pool</code> 直接访问 <code>PluginMeta</code> 的属性。<br><code>main.py</code> 则用来编写插件的逻辑，其中 <code>on_keyword</code> 装饰器用于注册一个命令，当用户发送命令时，会调用 <code>echo</code> 函数。 <em><code>on_keyword</code>及其他响应方式的使用方法请参考下文 <a href="#api%E4%BB%8B%E7%BB%8D">api介绍</a> 一节。</em></p>
+<p>在本示例中，<code>__init__.py</code> 用来初始化插件信息及其内部的对接收到的信息进行处理的函数。其中 <code>__plugin_meta__</code> 变量用于描述插件信息，包括插件名、描述、作者、用法等。如你所见，<code>PluginMeta</code> 是 <code>__plugin_meta__</code> 的元类，它定义在 <code>hysialx.plugins.manager</code> 包下。事实上，<code>__plugin_meta__</code> 的有无并不重要，它只是提供了一个 <code>PluginMeta</code> 实例，你可以通过 <code>get_plugin_pool</code> 直接访问 <code>PluginMeta</code> 的属性。<br><code>main.py</code> 则用来编写插件的逻辑，其中 <code>on_keyword</code> 装饰器用于注册一个命令，当用户发送命令时，会调用 <code>echo</code> 函数。 <em><code>on_keyword</code></em> 及其他响应方式的使用方法请参考下文 <a href="#api%E4%BB%8B%E7%BB%8D">api介绍</a> 一节。_</p>
 <h3 id="api介绍"><a href="#api介绍" class="headerlink" title="api介绍"></a>api介绍</h3><h4 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h4><p><strong>插件函数相关</strong></p>
 <ul>
 <li>custom</li>
@@ -712,72 +712,60 @@
 <li>get_waiting_pool</li>
 <li>getExpectedFuncs</li>
 </ul>
-<h4 id="各个api的作用"><a href="#各个api的作用" class="headerlink" title="各个api的作用"></a>各个api的作用</h4><p><strong>custom</strong></p>
-<ul>
+<h4 id="各个api的作用"><a href="#各个api的作用" class="headerlink" title="各个api的作用"></a>各个api的作用</h4><h5 id="custom"><a href="#custom" class="headerlink" title="custom"></a><strong>custom</strong></h5><ul>
 <li>函数签名：<code>custom(response_method: Callable) -&gt; Callable[[Bot, Event], Any]</code></li>
 <li>说明：接收一个 <code>response_method</code> 用于检测用户发送的信息是否符和该函数的响应方式，如果符合，则调用该函数。</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@custom(<span class="params"><span class="keyword">lambda</span> msg: msg.startswith(<span class="params"><span class="string">&#x27; &#x27;</span></span>)</span>)  </span><span class="comment"># 检测用户信息是否为空格开头</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">your_func</span>(<span class="params">bot: Bot, event: Event</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>on_regex</strong></p>
-<ul>
+<h5 id="on-regex"><a href="#on-regex" class="headerlink" title="on_regex"></a><strong>on_regex</strong></h5><ul>
 <li>函数签名：<code>on_regex(regex: str) -&gt; Callable[[Bot, Event], Any]</code></li>
 <li>说明：接收一个正则表达式，用于检测用户发送的信息是否符合该正则表达式。该装饰器装饰的函数所接收到的 <code>event.get_message</code> 将为正则表达式匹配到的结果。</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@on_regex(<span class="params"><span class="string">&quot;echo(.*)&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params"></span></span><br><span class="line"><span class="params">    bot: Bot,</span></span><br><span class="line"><span class="params">    event: Event</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>on_command</strong></p>
-<ul>
+<h5 id="on-command"><a href="#on-command" class="headerlink" title="on_command"></a><strong>on_command</strong></h5><ul>
 <li>函数签名：<code>on_command(cmd: Optional[str]=None) -&gt; Callable[[Bot, Event], Any]</code></li>
 <li>说明：接收一个命令，当用户发送该命令时，调用函数</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@on_command(<span class="params">cmd</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params"></span></span><br><span class="line"><span class="params">    bot: Bot,</span></span><br><span class="line"><span class="params">    event: Event</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>on_keyword</strong></p>
-<ul>
+<h5 id="on-keyword"><a href="#on-keyword" class="headerlink" title="on_keyword"></a><strong>on_keyword</strong></h5><ul>
 <li>函数签名：<code>on_keyword(keyword: Optional[str]=None) -&gt; Callable[[Bot, Event], Any]</code></li>
 <li>说明：接收一个关键字，当用户消息中包含该关键字时，调用 <code>func</code> 函数</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@on_keyword(<span class="params">keyword</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params"></span></span><br><span class="line"><span class="params">    bot: Bot,</span></span><br><span class="line"><span class="params">    event: Event</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>on_startup</strong></p>
-<ul>
+<h5 id="on-startup"><a href="#on-startup" class="headerlink" title="on_startup"></a><strong>on_startup</strong></h5><ul>
 <li>函数签名：<code>on_startup(func: Callable[[Bot], Any]) -&gt; Callable[[Bot], Any]</code></li>
 <li>说明：在机器人启动时调用函数</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@on_startup</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">startup</span>(<span class="params">bot: Bot, event: Event</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>on_shutdown</strong> <em>未实现</em></p>
-<ul>
+<h5 id="on-shutdown-未实现"><a href="#on-shutdown-未实现" class="headerlink" title="on_shutdown 未实现"></a><strong>on_shutdown</strong> <em>未实现</em></h5><ul>
 <li>函数签名：<code>on_shutdown(func: Callable[[Bot], Any]) -&gt; Callable[[Bot], Any]</code></li>
 <li>说明：在机器人关闭时调用函数</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@on_shutdown</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">shutdown</span>(<span class="params">bot: Bot, event: Event</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>RunInLoop</strong></p>
-<ul>
+<h5 id="RunInLoop"><a href="#RunInLoop" class="headerlink" title="RunInLoop"></a><strong>RunInLoop</strong></h5><ul>
 <li>函数签名：<code>RunInLoop(func: Callable[[Bot], Any]) -&gt; Callable[[Bot], Any]</code></li>
 <li>说明：在消息循环中调用函数（更准确来说是每收到一次消息就调用一次函数）</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunInLoop</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">loop</span>(<span class="params">bot: Bot, event: Event</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>set_device</strong></p>
-<ul>
+<h5 id="set-device"><a href="#set-device" class="headerlink" title="set_device"></a><strong>set_device</strong></h5><ul>
 <li>函数签名：<code>set_device(device: str) -&gt; None</code></li>
 <li>说明：设置机器人设备名称（可能失败，具体信息请参考 <a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/api/#%E8%AE%BE%E7%BD%AE%E5%9C%A8%E7%BA%BF%E6%9C%BA%E5%9E%8B">go-cqhttp set_device文档</a>）</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_device(<span class="string">&quot;114514 大粪手机&quot;</span>)</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>get_func_pool</strong></p>
-<ul>
+<h5 id="get-func-pool"><a href="#get-func-pool" class="headerlink" title="get_func_pool"></a><strong>get_func_pool</strong></h5><ul>
 <li>函数签名：<code>get_func_pool() -&gt; pool.FuncPool</code></li>
 <li>说明：获取当前已注册的函数池</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_func_pool()</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>get_plugin_pool</strong></p>
-<ul>
+<h5 id="get-plugin-pool"><a href="#get-plugin-pool" class="headerlink" title="get_plugin_pool"></a><strong>get_plugin_pool</strong></h5><ul>
 <li>函数签名：<code>get_plugin_pool() -&gt; plugins.managet.PluginPool</code></li>
 <li>说明：获取当前已注册的插件池，用法同上</li>
 </ul>
-<p><strong>get_waiting_pool</strong> <em>尚无实际意义</em></p>
-<ul>
+<h5 id="get-waiting-pool-尚无实际意义"><a href="#get-waiting-pool-尚无实际意义" class="headerlink" title="get_waiting_pool 尚无实际意义"></a><strong>get_waiting_pool</strong> <em>尚无实际意义</em></h5><ul>
 <li>函数签名：<code>get_waiting_pool() -&gt; pool.WaitingPool</code></li>
 <li>说明：获取当前已注册的等待函数池，用法同上</li>
 </ul>
-<p><strong>getExpectedFunc</strong></p>
-<ul>
+<h5 id="getExpectedFunc"><a href="#getExpectedFunc" class="headerlink" title="getExpectedFunc"></a><strong>getExpectedFunc</strong></h5><ul>
 <li>函数签名：<code>getExpectedFunc(func_pool: &quot;pool.FuncPool&quot;, expected_type: str) -&gt; pool.FuncPool</code></li>
 <li>说明：获取指定类型的函数池</li>
 <li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getExpectedFunc(get_func_pool(), <span class="string">&quot;on_regex&quot;</span>)</span><br></pre></td></tr></table></figure></li>
@@ -960,7 +948,8 @@
 
   <div id="myComment">
     
-      <div id="beaudar_container"></div>
+      <div id="gitment-container"></div>
+
     
   </div>
 
@@ -1063,7 +1052,7 @@
   <div class='content'>
     <div class="toc-main">
       <div class="toc-content">
-        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HysialX-%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">HysialX 框架相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99"><span class="toc-text">插件编写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%88%9B%E4%BD%9C"><span class="toc-text">开始创作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E6%8F%92%E4%BB%B6"><span class="toc-text">示例插件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#api%E4%BB%8B%E7%BB%8D"><span class="toc-text">api介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E8%A7%88"><span class="toc-text">总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E4%B8%AAapi%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">各个api的作用</span></a></li></ol></li></ol></li></ol> -->
+        <!-- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HysialX-%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">HysialX 框架相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99"><span class="toc-text">插件编写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%88%9B%E4%BD%9C"><span class="toc-text">开始创作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E6%8F%92%E4%BB%B6"><span class="toc-text">示例插件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#api%E4%BB%8B%E7%BB%8D"><span class="toc-text">api介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E8%A7%88"><span class="toc-text">总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E4%B8%AAapi%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">各个api的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#custom"><span class="toc-text">custom</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#on-regex"><span class="toc-text">on_regex</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#on-command"><span class="toc-text">on_command</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#on-keyword"><span class="toc-text">on_keyword</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#on-startup"><span class="toc-text">on_startup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#on-shutdown-%E6%9C%AA%E5%AE%9E%E7%8E%B0"><span class="toc-text">on_shutdown 未实现</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RunInLoop"><span class="toc-text">RunInLoop</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#set-device"><span class="toc-text">set_device</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#get-func-pool"><span class="toc-text">get_func_pool</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#get-plugin-pool"><span class="toc-text">get_plugin_pool</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#get-waiting-pool-%E5%B0%9A%E6%97%A0%E5%AE%9E%E9%99%85%E6%84%8F%E4%B9%89"><span class="toc-text">get_waiting_pool 尚无实际意义</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#getExpectedFunc"><span class="toc-text">getExpectedFunc</span></a></li></ol></li></ol></li></ol></li></ol> -->
         <div class="toc"></div>
       </div>
     </div>
@@ -2053,78 +2042,64 @@
 
   
     <script type="text/javascript">
-  var beaudarCommon = {};
+  var utteranceCommon = {};
 
-  function check_beaudar() {
+  function check_utterance() {
     let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
     if (isDark) {
-      beaudarCommon.Theme = 'github-dark';
+      utteranceCommon.Theme = 'github-dark';
     } else {
-      beaudarCommon.Theme = 'github-light';
+      utteranceCommon.Theme = 'github-light';
     }
 
-    return document.getElementById("beaudar_container");
+    return document.getElementById("gitment-container");
   }
-  comment_el = '#beaudar_container';
-  load_beaudar = function () {
+  comment_el = '#gitment-container';
+  load_utterance = function () {
     if ($(comment_el).length) {
       // 匿名函数，防止污染全局变量
-      const HEAD = check_beaudar();
+      const HEAD = check_utterance();
 
-      const script = document.createElement('script');
-      let issuenumber = "";
-      if (issuenumber) {
-        script.setAttribute('issue-number', issuenumber);
-      } else {
-        script.setAttribute('issue-term', "pathname");
-      }
-      script.setAttribute('src', 'https://beaudar.lipk.org/client.js');
-      script.setAttribute('repo', 'Xinre-L-awa/Xinre-L-awa.github.io');
-      script.setAttribute('input-position', 'top');
-      script.setAttribute('branch', 'main');
-      script.setAttribute('comment-order', 'desc');
-      script.setAttribute('label', '✨💬✨');
-      script.setAttribute('theme', beaudarCommon.Theme);
-      script.setAttribute('crossorigin', "anonymous");
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'Xinre-L-awa/Xinre-L-awa.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
       // content 是要插入评论的地方
-      document.getElementById('beaudar_container').appendChild(script);
+      document.getElementById('gitment-container').appendChild(utterances);
+
     }
   }
 
-  function dark_beaudar() {
-    const HEAD = check_beaudar();
+  function dark_utterance() {
+    const HEAD = check_utterance();
     if (!HEAD) return;
     const message = {
       type: 'set-theme',
-      theme: beaudarCommon.Theme
+      theme: utteranceCommon.Theme
     };
-    const beaudarIframe = document.querySelector('iframe');
-    beaudarIframe.contentWindow.postMessage(message, 'https://beaudar.lipk.org');
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
   }
 
-  function check_beaudar_style() {
-    // Beaudar 会往 HEAD 的首节点追加样式元素，而这个追加没有添加判断
-    // 所以 Pjax 下会多次添加样式文件，略微麻烦。
-    const checkStyle = document.querySelector('head').firstElementChild;
-    if (checkStyle.innerText.includes('beaudar')) checkStyle.remove();
-  }
-
-  $(document).ready(load_beaudar);
+  $(document).ready(load_utterance);
   document.addEventListener('pjax:complete', function () {
-    check_beaudar_style();
-    load_beaudar();
+    load_utterance();
   });
 
   $('.dark').click(function () {
     setTimeout(() => {
-      dark_beaudar();
+      dark_utterance();
     });
   })
 
 </script>
 
 <style>
-  .beaudars {
+  .utterances {
     max-width: inherit !important;
   }
 </style>
