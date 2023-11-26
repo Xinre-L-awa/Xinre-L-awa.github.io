@@ -691,7 +691,7 @@
 <p><code>main.py</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> api <span class="keyword">import</span> (</span><br><span class="line">    Bot,</span><br><span class="line">    Event,</span><br><span class="line">    on_keyword</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@on_keyword(<span class="params"><span class="string">&quot;echo&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">echo</span>(<span class="params"></span></span><br><span class="line"><span class="params">    bot: Bot,</span></span><br><span class="line"><span class="params">    event: Event</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">await</span> bot.send(event.get_group_id, event.get_message)</span><br></pre></td></tr></table></figure>
 
-<p>在本示例中，<code>__init__.py</code> 用来初始化插件信息及其内部的对接收到的信息进行处理的函数。其中 <code>__plugin_meta__</code> 变量用于描述插件信息，包括插件名、描述、作者、用法等。如你所见，<code>PluginMeta</code> 是 <code>__plugin_meta__</code> 的元类，它定义在 <code>hysialx.plugins.manager</code> 包下。事实上，<code>__plugin_meta__</code> 的有无并不重要，它只是提供了一个 <code>PluginMeta</code> 实例，你可以通过 <code>get_plugin_pool</code> 直接访问 <code>PluginMeta</code> 的属性。<br><code>main.py</code> 则用来编写插件的逻辑，其中 <code>on_keyword</code> 装饰器用于注册一个命令，当用户发送命令时，会调用 <code>echo</code> 函数。 <em><code>on_keyword</code></em> 及其他响应方式的使用方法请参考下文 <a href="#api%E4%BB%8B%E7%BB%8D">api介绍</a> 一节。_</p>
+<p>在本示例中，<code>__init__.py</code> 用来初始化插件信息及其内部的对接收到的信息进行处理的函数。其中 <code>__plugin_meta__</code> 变量用于描述插件信息，包括插件名、描述、作者、用法等。如你所见，<code>PluginMeta</code> 是 <code>__plugin_meta__</code> 的元类，它定义在 <code>hysialx.plugins.manager</code> 包下。事实上，<code>__plugin_meta__</code> 的有无并不重要，它只是提供了一个 <code>PluginMeta</code> 实例，你可以通过 <code>get_plugin_pool</code> 直接访问 <code>PluginMeta</code> 的属性。<br><code>main.py</code> 则用来编写插件的逻辑代码，其中 <code>on_keyword</code> 装饰器用于注册一个命令，当用户发送命令时，会调用 <code>echo</code> 函数。 <em><code>on_keyword</code></em> 及其他响应方式的使用方法请参考下文 <a href="#api%E4%BB%8B%E7%BB%8D">api介绍</a> 一节。_</p>
 <h3 id="api介绍"><a href="#api介绍" class="headerlink" title="api介绍"></a>api介绍</h3><h4 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h4><p><strong>插件函数相关</strong></p>
 <ul>
 <li>custom</li>
@@ -818,16 +818,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
     <a href="/2023/11/12/HysialX-DebugTool/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">HysialX-DebugTool</div>
+        <div class="title-text">HysialX-Debug Console</div>
       </div>
       
       <!-- <div class="content">
-        
+        前言由于机器人风控概率较高，不方便随时在qq上debug插件，现为此开发该Debug Console，用于模拟go-cq
       </div> -->
     </a>
   </div>
@@ -1105,7 +1105,7 @@
             <div class="post-img-box">
               <a href="/2023/11/12/HysialX-DebugTool/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-29e78b52051ce542adf6d786d61fbd19_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" class="lazyload placeholder" data-srcset="https://pic2.zhimg.com/80/v2-e22aaad20d20634f506f57fff0fcbc17_1440w.webp" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
@@ -1114,7 +1114,7 @@
                   <span class="post-date">11-12</span>
                 
               </div>
-              <a class="post-title" href="/2023/11/12/HysialX-DebugTool/">HysialX-DebugTool</a>
+              <a class="post-title" href="/2023/11/12/HysialX-DebugTool/">HysialX-Debug Console</a>
             </div>
           </div>
         

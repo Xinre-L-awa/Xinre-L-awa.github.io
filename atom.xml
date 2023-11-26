@@ -6,7 +6,7 @@
   <link href="http://xinre.top/atom.xml" rel="self"/>
   
   <link href="http://xinre.top/"/>
-  <updated>2023-11-12T01:47:17.312Z</updated>
+  <updated>2023-11-26T03:12:03.185Z</updated>
   <id>http://xinre.top/</id>
   
   <author>
@@ -17,14 +17,14 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>HysialX-DebugTool</title>
+    <title>HysialX-Debug Console</title>
     <link href="http://xinre.top/2023/11/12/HysialX-DebugTool/"/>
     <id>http://xinre.top/2023/11/12/HysialX-DebugTool/</id>
     <published>2023-11-12T01:46:55.000Z</published>
-    <updated>2023-11-12T01:47:17.312Z</updated>
+    <updated>2023-11-26T03:12:03.185Z</updated>
     
     
-    <summary type="html">HysialX-DebugTool</summary>
+    <summary type="html">HysialX-Debug Console</summary>
     
     
     
@@ -42,7 +42,7 @@
     <link href="http://xinre.top/2023/09/02/HysialX-%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%9A%84qq%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A1%86%E6%9E%B6/"/>
     <id>http://xinre.top/2023/09/02/HysialX-%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%9A%84qq%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%A1%86%E6%9E%B6/</id>
     <published>2023-09-02T11:13:12.000Z</published>
-    <updated>2023-09-24T02:40:34.266Z</updated>
+    <updated>2023-11-12T01:55:52.385Z</updated>
     
     
     <summary type="html">HysialX-一个简易的qq机器人框架</summary>
